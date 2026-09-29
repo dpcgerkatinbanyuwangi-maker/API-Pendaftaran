@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pendaftaran Online</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .card-custom {
+            max-width: 650px;
+            margin: 40px auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            border: none;
+        }
+        .qr-container {
+            background-color: #eef2f7;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card card-custom p-4">
+        <h3 class="text-center fw-bold mb-4">Formulir Pendaftaran</h3>
+        
+        <form id="formPendaftaran">
+            
+            <!-- Category Selection -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Kategori Peserta</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kategori" id="katDewasa" value="Dewasa" checked onchange="toggleKategori()">
+                        <label class="form-check-label" for="katDewasa">Dewasa</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="kategori" id="katAnak" value="Anak" onchange="toggleKategori()">
+                        <label class="form-check-label" for="katAnak">Anak-anak</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nama Lengkap -->
+            <div class="mb-3">
+                <label for="namaLengkap" class="form-label fw-semibold">Nama Lengkap</label>
+                <input type="text" class="form-control" id="namaLengkap" placeholder="Masukkan nama lengkap" required>
+            </div>
+
+            <!-- Jenis Kelamin -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Jenis Kelamin</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="jenisKelamin" id="jkLaki" value="Laki-laki" required>
+                        <label class="form-check-label" for="jkLaki">Laki-laki</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="jenisKelamin" id="jkPerempuan" value="Perempuan">
+                        <label class="form-check-label" for="jkPerempuan">Perempuan</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NIK KTP -->
+            <div class="mb-3">
+                <label for="nikKtp" class="form-label fw-semibold" id="labelNik">NIK KTP <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="nikKtp" placeholder="16 digit NIK KTP" required>
+            </div>
+
+            <!-- Nomor WhatsApp -->
+            <div class="mb-3">
+                <label for="noWhatsapp" class="form-label fw-semibold">Nomor WhatsApp</label>
+                <input type="tel" class="form-control" id="noWhatsapp" placeholder="Contoh: 081234567890" required>
+            </div>
+
+            <div class="row">
+                <!-- Ukuran Kaos -->
+                <div class="col-md-6 mb-3">
+                    <label for="ukuranKaos" class="form-label fw-semibold">Ukuran Kaos</label>
+                    <select class="form-select" id="ukuranKaos" required>
+                        <option value="" disabled selected>Pilih Ukuran</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                        <option value="XXXL">XXXL</option>
+                    </select>
+                </div>
+
+                <!-- Ukuran Lengan -->
+                <div class="col-md-6 mb-3">
+                    <label for="ukuranLengan" class="form-label fw-semibold">Jenis Lengan</label>
+                    <select class="form-select" id="ukuranLengan" required>
+                        <option value="" disabled selected>Pilih Lengan</option>
+                        <option value="Pendek">Pendek</option>
+                        <option value="Panjang">Panjang</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Seksi Pembayaran -->
+            <hr class="my-4">
+            <h5 class="fw-bold mb-3">Metode Pembayaran</h5>
+            
+            <div class="qr-container mb-3">
+                <p class="mb-2 fw-semibold">Scan QRIS Di Bawah Ini Untuk Pembayaran:</p>
+                <!-- QR Code Dummy (Ganti src ini dengan URL gambar QRIS Anda) -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=PembayaranPendaftaran" alt="QR Code Pembayaran" class="img-fluid my-2 border rounded p-1 bg-white">
+                <p class="small text-muted mt-1">Dapat di-scan via GoPay, OVO, Dana, ShopeePay, atau Mobile Banking.</p>
+            </div>
+
+            <!-- Upload Bukti Transfer -->
+            <div class="mb-4">
+                <label for="buktiBayar" class="form-label fw-semibold">Upload Bukti Transfer / Scan QR</label>
+                <input class="form-control" type="file" id="buktiBayar" accept="image/*" required>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Kirim Pendaftaran</button>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript Logic -->
+<script>
+    // Fungsi untuk mengubah status kewajiban NIK berdasarkan kategori
+    function toggleKategori() {
+        const isDewasa = document.getElementById('katDewasa').checked;
+        const nikInput = document.getElementById('nikKtp');
+        const labelNik = document.getElementById('labelNik');
+
+        if (isDewasa) {
+            nikInput.required = true;
+            labelNik.innerHTML = 'NIK KTP <span class="text-danger">*</span>';
+            nikInput.placeholder = '16 digit NIK KTP';
+        } else {
+            nikInput.required = false;
+            labelNik.innerHTML = 'NIK KTP / KIA <span class="text-muted">(Opsional untuk anak)</span>';
+            nikInput.placeholder = 'Nomor Identitas Anak / NIK (jika ada)';
+        }
+    }
+
+    // Tangani event Submit Form
+    document.getElementById('formPendaftaran').addEventListener('submit', function(event) {
+        event.preventDefault(); // Mencegah reload halaman
+
+        const nama = document.getElementById('namaLengkap').value;
+        const kategori = document.querySelector('input[name="kategori"]:checked').value;
+        const noWa = document.getElementById('noWhatsapp').value;
+
+        // Tampilkan pesan konfirmasi
+        alert(`Terima kasih, ${nama}!\nPendaftaran (${kategori}) Anda telah berhasil dikirim. Kami akan memverifikasi pembayaran Anda melalui WhatsApp (${noWa}).`);
+        
+        // Reset form setelah kirim
+        this.reset();
+        toggleKategori();
+    });
+</script>
+
+</body>
+</html>
